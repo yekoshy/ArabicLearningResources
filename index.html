@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Resources Mind Map</title>
+    <style>
+        :root {
+            --primary: #27ae60;
+            --dark: #2c3e50;
+            --light: #f4f7f6;
+            --text: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--light);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: var(--dark);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+            gap: 12px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .map-switch-btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid var(--primary);
+            background-color: white;
+            color: var(--primary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .map-switch-btn.active {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+        }
+
+        .content-area {
+            flex: 1;
+            position: relative;
+            background: white;
+        }
+
+        .map-container {
+            position: absolute;
+            top: 0;
+            right: 0; /* Align to right for RTL */
+            width: 100%;
+            height: 100%;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .map-container.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .markmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Ensure links are readable and clickable */
+        .markmap a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        .markmap a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.15.2"></script>
+</head>
+<body>
+
+    <div class="header">
+        <h1 style="margin:0; font-size: 1.5rem;">مصادر التعلم (عربي)</h1>
+    </div>
+
+    <div class="nav-container">
+        <button class="map-switch-btn active" onclick="switchMap(this, 'map1')">المصادر التعليمية</button>
+        </div>
+
+    <div class="content-area">
+        <div id="map1" class="map-container active">
+            <div class="markmap">
+# عربي
+## كروت تخاطب
+- [كروت تخاطب ذكية](https://www.amazon.eg/-/en/Smart-Speech-Cards-Complete-2724970172977/dp/B099MFGN7J/)
+## أوراق للطباعة
+- [رابط أوراق الطباعة](https://drive.google.com/drive/u/0/folders/1IYyTHwaQQskihpRZgLrjU4nuzf4FFVgH)
+## قصص
+- [قصص مسجلة بصوتي](https://drive.google.com/drive/folders/1dj7JqWOdpTnLRyXAsUSuTYBgN7jVPRX2)
+- [دار عالية للنشر](https://reachalia.com/)
+  - [كتب صوتية](https://reachalia.com/collections/%D9%83%D8%AA%D8%A8-%D8%B5%D9%88%D8%AA%D9%8A%D8%A9)
+  - [كتب وقصص الأغاني](https://reachalia.com/collections/%D8%A3%D8%BA%D8%A7%D9%86%D9%8I)
+  - [الموقع الرسمي](https://reachalia.com/)
+- [كتب شيرين](https://sherinebooks.com/)
+- [بيت ريما للحكايا](https://beitrimastories.com/)
+- [Moon Edu](https://www.moon-edu.com/)
+- [سفير](https://noorybooks.com/publishers/8-%D8%AF%D8%A7%D8%B1-%D8%B3%D9%81%D9%8A%D8%B1)
+- [عصفورة](https://www.asfourabooks.com/ar/collections/all?page=1)
+- [بيت الكتب](https://www.thebookhome.com/Home/selectedCategory/46)
+- [Kidsotic](https://www.kidsotic.com/)
+- [مكتبة البلسم](https://global.al-balsam.com/ar)
+## رسوم متحركة
+- [سعود وسارة](https://www.youtube.com/@saudwesara)
+- [سراج](https://www.youtube.com/@sirajshowofficial)
+- [البسّان](https://www.youtube.com/@elbissan)
+## المواقع والتطبيقات
+- [ألف باء تاء (4 سنوات)](https://www.alefbata.com/)
+- [تطبيق سراج](https://play.google.com/store/apps/details?id=air.org.qatarfoundation.QFSiraj)
+- [تطبيق جيل (محتوى آمن)](https://play.google.com/store/apps/details?id=com.jeelapp.android)
+- [قصص عصافير](https://play.google.com/store/apps/details?id=com.asafeer.qesas)
+- [القاعدة النورانية](https://play.google.com/store/apps/details?id=com.gplanet_tech.noraneya)
+- [الأربعون النووية](https://play.google.com/store/apps/details?id=com.reda.nawawiforty)
+- [الموسوعة الحديثية](https://play.google.com/store/apps/details?id=com.zad.hadith)
+- [رياض الصالحين](https://play.google.com/store/apps/details?id=com.reda.riyadh)
+- [معالم السنة النبوية](https://play.google.com/store/apps/details?id=com.maalem_alsunnah)
+- [مكتبة نوري](https://play.google.com/store/apps/details?id=co.noory.books)
+- [المكتبة الشاملة](https://play.google.com/store/apps/details?id=com.arabdt.shamla)
+- [الحصري المعلم للأطفال](https://play.google.com/store/apps/details?id=b.owtech.islamic.quran.sound.hosrymolem1)
+- [Khan Academy Kids](https://play.google.com/store/apps/details?id=org.khankids.android)
+- [حصن المسلم](https://play.google.com/store/apps/details?id=com.hisn.almuslim)
+## Puzzle & Learning Tools
+- [Ummi and Kids](https://ummiandkids.com/arabic-alphabet-bundle/)
+- [Alaabi](https://alaabi.co.uk)
+- [Akwan (Takween Words)](https://akwan.me/en/collections/all-products/products/takween-words)
+- [Amazon Puzzle 1](https://www.amazon.eg/-/en/dp/B08WJKXL2N)
+- [Amazon Puzzle 2](https://www.amazon.eg/-/en/dp/B08WJMZ9R2)
+- [Amazon Puzzle 3](https://www.amazon.eg/-/en/dp/B08WJNG9NG)
+- [Amazon Puzzle 4](https://www.amazon.eg/-/en/gp/aw/d/B08X64T5FT)
+## إضافات
+- [ما لا يسع المسلم جهله](https://drive.google.com/file/d/1faUQOXsI8l-Mteq2snLp37Ocn9nXtlMg/view?usp=drive_link)
+- [أطفال الغزالي (Facebook)](https://www.facebook.com/GhazaliChildren)
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchMap(btn, mapId) {
+            // Update Buttons
+            document.querySelectorAll('.map-switch-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Update Map Visibility
+            document.querySelectorAll('.map-container').forEach(m => m.classList.remove('active'));
+            const selectedMap = document.getElementById(mapId);
+            selectedMap.classList.add('active');
+
+            // Trigger resize to fix Markmap rendering bug
+            setTimeout(() => {
+                window.dispatchEvent(new Event('resize'));
+            }, 50); 
+        }
+    </script>
+</body>
+</html>
