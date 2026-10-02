@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arabic Alphabet Tracing Book Customizer</title>
-    <!-- Include pdf-lib for PDF manipulation -->
+    <title>كتاب تتبع الحروف العربية</title>
+    <!-- تضمين مكتبة pdf-lib لمعالجة ملفات PDF -->
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+
         :root {
             --primary: #4F86F7;
             --secondary: #FF6B6B;
@@ -17,7 +19,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background);
             color: var(--text);
             margin: 0;
@@ -30,6 +32,11 @@
         h1 {
             color: var(--primary);
             margin-bottom: 10px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 1.1rem;
             text-align: center;
         }
 
@@ -69,14 +76,14 @@
             border-radius: 8px;
         }
 
-        .upload-group {
+        .status-box {
             border: 2px dashed var(--primary);
             padding: 15px;
             border-radius: 8px;
             background-color: #f9faff;
         }
 
-        .upload-group label {
+        .status-box label {
             font-weight: bold;
             display: block;
             margin-bottom: 8px;
@@ -97,6 +104,7 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
+            font-family: inherit;
             font-weight: 600;
             transition: opacity 0.2s;
             width: 100%;
@@ -126,6 +134,8 @@
             border: 1px solid #ccc;
             border-radius: 6px;
             font-size: 16px;
+            font-family: inherit;
+            text-align: center;
         }
 
         #loading {
@@ -147,62 +157,54 @@
 </head>
 <body>
 
-    <h1>✨ Arabic Alphabet Tracing Book ✨</h1>
-    <p>The base workbook is loaded automatically. Upload your background image(s) to generate styled pages!</p>
+    <h1>✨ كتاب تتبع الحروف العربية ✨</h1>
+    <p>يتم جلب ملف التدريب الأساسي تلقائياً. يمكنك تحميل الكتاب كاملاً أو أجزاء منه حسب المستوى من الأسفل!</p>
 
     <div class="container">
-        <!-- Controls Panel -->
+        <!-- لوحة التحكم -->
         <div class="controls">
             
-            <!-- Automatically load PDF from directory -->
-            <div class="upload-group">
-                <label>1. Base Workbook Status</label>
-                <div id="pdf-status" class="status-text">⏳ Fetching Arabic_Writing_Workbook.pdf...</div>
+            <!-- حالة ملف الـ PDF -->
+            <div class="status-box">
+                <label>1. حالة كتاب التدريب الأساسي</label>
+                <div id="pdf-status" class="status-text">⏳ جاري جلب ملف Arabic_Writing_Workbook.pdf...</div>
             </div>
 
-            <div class="upload-group">
-                <label>2. Upload Background Image(s)</label>
-                <input type="file" id="bg-upload" accept="image/png, image/jpeg" multiple>
-                <small style="color: #666; display: block; margin-top: 5px;">(You can upload 1 or both background images. They will be applied to the background of every page.)</small>
-            </div>
+            <div id="loading">جاري معالجة ملف PDF... يرجى الانتظار ⏳</div>
 
-            <div id="loading">Processing PDF... Please wait ⏳</div>
-
-            <button id="btn-preview" disabled>👁️ Preview Whole Book</button>
-            <button id="btn-dl-all" class="btn-success" disabled>📥 Download Whole Book</button>
+            <button id="btn-preview" disabled>👁️ معاينة الكتاب بالكامل</button>
+            <button id="btn-dl-all" class="btn-success" disabled>📥 تحميل الكتاب بالكامل</button>
 
             <div class="level-group">
-                <h3 style="margin:0; font-size: 16px; color: #555;">Download by Levels</h3>
-                <button id="btn-dl-lv1" class="btn-secondary" disabled>📕 Level 1 (1 Letter/Page) - Pages 1-28</button>
-                <button id="btn-dl-lv2" class="btn-secondary" disabled>📗 Level 2 (2 Letters/Page) - Pages 29-56</button>
-                <button id="btn-dl-lv3" class="btn-secondary" disabled>📘 Level 3 (4 Letters/Page) - Pages 57-84</button>
+                <h3 style="margin:0; font-size: 16px; color: #555;">التحميل حسب المستويات</h3>
+                <button id="btn-dl-lv1" class="btn-secondary" disabled>📕 المستوى 1 (حرف واحد/صفحة) - الصفحات 1-28</button>
+                <button id="btn-dl-lv2" class="btn-secondary" disabled>📗 المستوى 2 (حرفان/صفحة) - الصفحات 29-56</button>
+                <button id="btn-dl-lv3" class="btn-secondary" disabled>📘 المستوى 3 (4 حروف/صفحة) - الصفحات 57-84</button>
             </div>
 
             <div class="level-group">
-                <h3 style="margin:0; font-size: 16px; color: #555;">Download Specific Page</h3>
+                <h3 style="margin:0; font-size: 16px; color: #555;">تحميل صفحة محددة</h3>
                 <div class="row">
+                    <button id="btn-dl-page" disabled>📄 تحميل الصفحة رقم:</button>
                     <input type="number" id="page-num" min="1" max="84" value="1">
-                    <button id="btn-dl-page" disabled>📄 Download Page</button>
                 </div>
             </div>
         </div>
 
-        <!-- Viewer Panel -->
+        <!-- لوحة عرض الـ PDF -->
         <div class="viewer-container">
-            <h2 style="margin-top: 0; font-size: 18px; color: #555;">PDF Preview</h2>
-            <iframe id="pdf-viewer" title="PDF Preview"></iframe>
+            <h2 style="margin-top: 0; font-size: 18px; color: #555;">معاينة الـ PDF</h2>
+            <iframe id="pdf-viewer" title="معاينة PDF"></iframe>
         </div>
     </div>
 
     <script>
-        const { PDFDocument, BlendMode } = PDFLib;
+        const { PDFDocument } = PDFLib;
 
-        // State
+        // الحالة
         let originalPdfBytes = null;
-        let bgFiles = [];
 
-        // DOM Elements
-        const bgUpload = document.getElementById('bg-upload');
+        // عناصر الصفحة
         const iframe = document.getElementById('pdf-viewer');
         const loading = document.getElementById('loading');
         const pdfStatus = document.getElementById('pdf-status');
@@ -215,10 +217,15 @@
         const btnDlPage = document.getElementById('btn-dl-page');
         const pageNumInput = document.getElementById('page-num');
 
-        // Automatically fetch the PDF when the page loads
+        // عرض الـ PDF داخل الـ Iframe
+        function previewPDF(pdfBytes) {
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            iframe.src = URL.createObjectURL(blob);
+        }
+
+        // جلب ملف الـ PDF تلقائياً عند فتح الصفحة
         window.addEventListener('DOMContentLoaded', async () => {
             try {
-                // Adjust the filename to match the one on your Github repository exactly
                 const response = await fetch('Arabic_Writing_Workbook.pdf');
                 
                 if (!response.ok) {
@@ -226,18 +233,23 @@
                 }
                 
                 originalPdfBytes = await response.arrayBuffer();
-                pdfStatus.innerHTML = '✅ Workbook loaded successfully!';
+                
+                // تحديث حالة الواجهة
+                pdfStatus.innerHTML = '✅ تم جلب كتاب التدريب بنجاح!';
                 pdfStatus.style.color = 'var(--success)';
                 checkReady();
+
+                // عرض الملف في شاشة المعاينة فوراً
+                previewPDF(originalPdfBytes);
                 
             } catch (error) {
                 console.error("Error loading PDF:", error);
-                pdfStatus.innerHTML = '❌ Failed to load workbook. Please ensure "Arabic_Writing_Workbook.pdf" is in the same folder.';
+                pdfStatus.innerHTML = '❌ فشل تحميل كتاب التدريب. تأكد من وجود ملف "Arabic_Writing_Workbook.pdf" في نفس المجلد.';
                 pdfStatus.style.color = 'var(--secondary)';
             }
         });
 
-        // Enable buttons when PDF is loaded
+        // تفعيل الأزرار عندما يصبح الملف جاهزاً
         function checkReady() {
             const isReady = originalPdfBytes !== null;
             btnPreview.disabled = !isReady;
@@ -248,79 +260,47 @@
             btnDlPage.disabled = !isReady;
         }
 
-        // Handle Background Images Upload
-        bgUpload.addEventListener('change', (e) => {
-            bgFiles = Array.from(e.target.files);
-        });
-
-        // Core processing function
-        // Note: 0-indexed logic. startIdx and endIdx are inclusive.
-        async function generateModifiedPDF(startIdx, endIdx) {
+        // دالة لاستخراج صفحات معينة بشكل سريع باستخدام copyPages
+        async function extractPDFPages(startIdx, endIdx) {
             loading.style.display = 'block';
+            try {
+                // تحميل ملف الـ PDF الأصلي
+                const srcPdf = await PDFDocument.load(originalPdfBytes);
+                const totalSrcPages = srcPdf.getPageCount();
 
-            // Create a new empty PDF
-            const newPdf = await PDFDocument.create();
-            // Load the original PDF
-            const srcPdf = await PDFDocument.load(originalPdfBytes);
-            const totalSrcPages = srcPdf.getPageCount();
+                // إنشاء ملف PDF جديد فارغ
+                const newPdf = await PDFDocument.create();
 
-            // Prepare Background Images
-            const bgEmbeds = [];
-            for (let file of bgFiles) {
-                const buffer = await file.arrayBuffer();
-                if (file.type === 'image/jpeg' || file.name.toLowerCase().endsWith('.jpg')) {
-                    bgEmbeds.push(await newPdf.embedJpg(buffer));
-                } else if (file.type === 'image/png' || file.name.toLowerCase().endsWith('.png')) {
-                    bgEmbeds.push(await newPdf.embedPng(buffer));
-                }
-            }
-
-            // Gather page indices to process
-            const pageIndices = [];
-            for(let i = startIdx; i <= endIdx; i++) {
-                if (i < totalSrcPages) {
-                    pageIndices.push(i);
-                }
-            }
-
-            // Copy pages out of the source PDF
-            const embeddedPages = await newPdf.embedPages(srcPdf, pageIndices);
-
-            // Compose the pages
-            embeddedPages.forEach((embPage, i) => {
-                const { width, height } = embPage;
-                const page = newPdf.addPage([width, height]);
-
-                // 1. Draw the background image (cycles through uploaded images if multiple)
-                if (bgEmbeds.length > 0) {
-                    const bg = bgEmbeds[i % bgEmbeds.length];
-                    page.drawImage(bg, {
-                        x: 0,
-                        y: 0,
-                        width: width,
-                        height: height
-                    });
+                // جمع أرقام الصفحات المطلوبة للمعالجة
+                const pageIndices = [];
+                for(let i = startIdx; i <= endIdx; i++) {
+                    if (i < totalSrcPages) {
+                        pageIndices.push(i);
+                    }
                 }
 
-                // 2. Draw the original PDF page content on top.
-                // Using Multiply Blend Mode drops the white background from the original PDF pages, 
-                // making them act transparent so the new background image shows through perfectly!
-                page.drawPage(embPage, {
-                    x: 0,
-                    y: 0,
-                    width: width,
-                    height: height,
-                    blendMode: BlendMode.Multiply
+                // نسخ الصفحات المطلوبة من الملف الأصلي
+                const copiedPages = await newPdf.copyPages(srcPdf, pageIndices);
+
+                // إضافتها للملف الجديد
+                copiedPages.forEach((page) => {
+                    newPdf.addPage(page);
                 });
-            });
 
-            const pdfBytes = await newPdf.save();
-            loading.style.display = 'none';
-            return pdfBytes;
+                const pdfBytes = await newPdf.save();
+                loading.style.display = 'none';
+                return pdfBytes;
+            } catch (error) {
+                console.error("Error splitting PDF: ", error);
+                loading.style.display = 'none';
+                alert("حدث خطأ أثناء معالجة ملف الـ PDF.");
+                return null;
+            }
         }
 
-        // Trigger Download
+        // دالة التحميل للجهاز
         function downloadBlob(bytes, filename) {
+            if (!bytes) return;
             const blob = new Blob([bytes], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -332,32 +312,30 @@
             URL.revokeObjectURL(url);
         }
 
-        // Preview in Iframe
-        btnPreview.addEventListener('click', async () => {
-            const bytes = await generateModifiedPDF(0, 83); // All 84 pages (indices 0-83)
-            const blob = new Blob([bytes], { type: 'application/pdf' });
-            iframe.src = URL.createObjectURL(blob);
+        // معاينة الكتاب
+        btnPreview.addEventListener('click', () => {
+            if(originalPdfBytes) previewPDF(originalPdfBytes);
         });
 
-        // Download Actions
-        btnDlAll.addEventListener('click', async () => {
-            const bytes = await generateModifiedPDF(0, 83);
-            downloadBlob(bytes, 'Alphabet_Tracing_Complete.pdf');
+        // عمليات التحميل
+        btnDlAll.addEventListener('click', () => {
+            // تحميل الملف الأصلي المجلوب مباشرة بدون معالجة
+            downloadBlob(originalPdfBytes, 'كتاب_الحروف_العربية_كامل.pdf');
         });
 
         btnDlLv1.addEventListener('click', async () => {
-            const bytes = await generateModifiedPDF(0, 27); // Pages 1-28
-            downloadBlob(bytes, 'Level_1_Single_Letter.pdf');
+            const bytes = await extractPDFPages(0, 27); // صفحات 1-28
+            downloadBlob(bytes, 'المستوى_الأول_حرف_واحد.pdf');
         });
 
         btnDlLv2.addEventListener('click', async () => {
-            const bytes = await generateModifiedPDF(28, 55); // Pages 29-56
-            downloadBlob(bytes, 'Level_2_Double_Letters.pdf');
+            const bytes = await extractPDFPages(28, 55); // صفحات 29-56
+            downloadBlob(bytes, 'المستوى_الثاني_حرفان.pdf');
         });
 
         btnDlLv3.addEventListener('click', async () => {
-            const bytes = await generateModifiedPDF(56, 83); // Pages 57-84
-            downloadBlob(bytes, 'Level_3_Four_Letters.pdf');
+            const bytes = await extractPDFPages(56, 83); // صفحات 57-84
+            downloadBlob(bytes, 'المستوى_الثالث_اربعة_حروف.pdf');
         });
 
         btnDlPage.addEventListener('click', async () => {
@@ -365,9 +343,9 @@
             if (pageNum < 1) pageNum = 1;
             if (pageNum > 84) pageNum = 84;
             
-            const idx = pageNum - 1; // Convert to 0-index
-            const bytes = await generateModifiedPDF(idx, idx);
-            downloadBlob(bytes, `Tracing_Page_${pageNum}.pdf`);
+            const idx = pageNum - 1; // تحويل الرقم للتعامل مع البرمجة
+            const bytes = await extractPDFPages(idx, idx);
+            downloadBlob(bytes, `صفحة_تتبع_${pageNum}.pdf`);
         });
 
     </script>
