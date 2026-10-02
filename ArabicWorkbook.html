@@ -83,6 +83,12 @@
             color: var(--primary);
         }
 
+        .status-text {
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+        }
+
         button {
             background-color: var(--primary);
             color: white;
@@ -142,20 +148,22 @@
 <body>
 
     <h1>✨ Arabic Alphabet Tracing Book ✨</h1>
-    <p>Upload the base PDF and your background image(s) to generate styled pages!</p>
+    <p>The base workbook is loaded automatically. Upload your background image(s) to generate styled pages!</p>
 
     <div class="container">
         <!-- Controls Panel -->
         <div class="controls">
+            
+            <!-- Automatically load PDF from directory -->
             <div class="upload-group">
-                <label>1. Upload the original PDF</label>
-                <input type="file" id="pdf-upload" accept="application/pdf">
+                <label>1. Base Workbook Status</label>
+                <div id="pdf-status" class="status-text">⏳ Fetching Arabic_Writing_Workbook.pdf...</div>
             </div>
 
             <div class="upload-group">
                 <label>2. Upload Background Image(s)</label>
                 <input type="file" id="bg-upload" accept="image/png, image/jpeg" multiple>
-                <small style="color: #666; display: block; margin-top: 5px;">(You can upload 1 or both attached images. They will be applied to the background of every page.)</small>
+                <small style="color: #666; display: block; margin-top: 5px;">(You can upload 1 or both background images. They will be applied to the background of every page.)</small>
             </div>
 
             <div id="loading">Processing PDF... Please wait ⏳</div>
@@ -194,10 +202,10 @@
         let bgFiles = [];
 
         // DOM Elements
-        const pdfUpload = document.getElementById('pdf-upload');
         const bgUpload = document.getElementById('bg-upload');
         const iframe = document.getElementById('pdf-viewer');
         const loading = document.getElementById('loading');
+        const pdfStatus = document.getElementById('pdf-status');
         
         const btnPreview = document.getElementById('btn-preview');
         const btnDlAll = document.getElementById('btn-dl-all');
@@ -206,6 +214,28 @@
         const btnDlLv3 = document.getElementById('btn-dl-lv3');
         const btnDlPage = document.getElementById('btn-dl-page');
         const pageNumInput = document.getElementById('page-num');
+
+        // Automatically fetch the PDF when the page loads
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Adjust the filename to match the one on your Github repository exactly
+                const response = await fetch('Arabic_Writing_Workbook.pdf');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                originalPdfBytes = await response.arrayBuffer();
+                pdfStatus.innerHTML = '✅ Workbook loaded successfully!';
+                pdfStatus.style.color = 'var(--success)';
+                checkReady();
+                
+            } catch (error) {
+                console.error("Error loading PDF:", error);
+                pdfStatus.innerHTML = '❌ Failed to load workbook. Please ensure "Arabic_Writing_Workbook.pdf" is in the same folder.';
+                pdfStatus.style.color = 'var(--secondary)';
+            }
+        });
 
         // Enable buttons when PDF is loaded
         function checkReady() {
@@ -217,14 +247,6 @@
             btnDlLv3.disabled = !isReady;
             btnDlPage.disabled = !isReady;
         }
-
-        // Handle PDF Upload
-        pdfUpload.addEventListener('change', async (e) => {
-            if (e.target.files[0]) {
-                originalPdfBytes = await e.target.files[0].arrayBuffer();
-                checkReady();
-            }
-        });
 
         // Handle Background Images Upload
         bgUpload.addEventListener('change', (e) => {
